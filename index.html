@@ -101,82 +101,96 @@
     </div>
 
     <script>
-        function calcularIdade() {
-            const dataNascimento = document.getElementById('dataNascimento').value;
-            const idadeInput = document.getElementById('idade');
-            const mensagemErro = document.getElementById('mensagemErro');
+         function calcularIdade() {
+        const dataNascimento = document.getElementById('dataNascimento').value;// Obtém o valor do campo 'dataNascimento', onde o usuário insere sua data de nascimento.
+    const idadeInput = document.getElementById('idade');// Seleciona o elemento de input de idade onde a idade calculada será exibida.
+    const mensagemErro = document.getElementById('mensagemErro'); // Seleciona o elemento onde será exibida uma mensagem de erro, caso haja.
 
-            if (dataNascimento) {
-                const hoje = new Date();
-                const nascimento = new Date(dataNascimento);
-                let idade = hoje.getFullYear() - nascimento.getFullYear();
-                const mes = hoje.getMonth() - nascimento.getMonth();
+    if (dataNascimento) { // Verifica se o campo 'dataNascimento' foi preenchido
+        const hoje = new Date(); // Obtém a data atual para calcular a idade.
+        const nascimento = new Date(dataNascimento);// Converte a data de nascimento inserida em um objeto Date.
+        let idade = hoje.getFullYear() - nascimento.getFullYear();// Calcula a idade inicial com base na diferença de anos entre a data atual e a data de nascimento.
+        const mes = hoje.getMonth() - nascimento.getMonth(); // Calcula a diferença de meses entre a data atual e a data de nascimento.
 
-                if (mes < 0 || (mes === 0 && hoje.getDate() < nascimento.getDate())) {
-                    idade--;
-                }
+        if (mes < 0 || (mes === 0 && hoje.getDate() < nascimento.getDate())) {// Ajusta a idade se o mês atual for antes do mês de aniversário ou, no caso de ser o mesmo mês, se o dia atual for antes do dia de aniversário.
+            idade--;
+        }    
+        if (idade < 0 || idade > 120) {// Verifica se a idade calculada é inválida (menor que 0 ou maior que 120).
+            idadeInput.value = ''; // Limpa o campo de idade e a data de nascimento e exibe uma mensagem de erro.
+            document.getElementById('dataNascimento').value = '';
+            mensagemErro.textContent = 'Data de nascimento inválida.';
 
-                if (idade < 0 || idade > 120) { // Idade inválida
-                    idadeInput.value = '';
-                    document.getElementById('dataNascimento').value = '';
-                    mensagemErro.textContent = 'Data de nascimento inválida.';
-                } else {
-                    idadeInput.value = idade;
-                    mensagemErro.textContent = '';
-                }
-            } else {
-                idadeInput.value = '';
-            }
-        }
-
-        function validarCPF(cpf) {
-            cpf = cpf.replace(/[^\d]+/g, ''); // Remove caracteres não numéricos
-            if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
-
-            let soma = 0;
-            let resto;
-
-            for (let i = 1; i <= 9; i++) soma += parseInt(cpf.substring(i - 1, i)) * (11 - i);
-            resto = (soma * 10) % 11;
-            if (resto === 10 || resto === 11) resto = 0;
-            if (resto !== parseInt(cpf.substring(9, 10))) return false;
-
-            soma = 0;
-            for (let i = 1; i <= 10; i++) soma += parseInt(cpf.substring(i - 1, i)) * (12 - i);
-            resto = (soma * 10) % 11;
-            if (resto === 10 || resto === 11) resto = 0;
-            if (resto !== parseInt(cpf.substring(10, 11))) return false;
-
-            return true;
-        }
-
-        function validarFormulario() {
-            const senha = document.getElementById('senha').value;
-            const confirmacaoSenha = document.getElementById('confirmacaoSenha').value;
-            const cpf = document.getElementById('cpf').value;
-            const mensagemErro = document.getElementById('mensagemErro');
-
-            if (senha !== confirmacaoSenha) {
-                mensagemErro.textContent = 'As senhas não coincidem.';
-                return false;
-            }
-
-            if (!validarCPF(cpf)) {
-                mensagemErro.textContent = 'CPF inválido.';
-                return false;
-            }
-
+        } else { // Caso a idade seja válida, exibe a idade no campo de idade e remove qualquer mensagem de erro.
+            idadeInput.value = idade;
             mensagemErro.textContent = '';
-            return true;
         }
+    } else {// Se o campo de data de nascimento estiver vazio, limpa o campo de idade.
+        idadeInput.value = '';
+    }
+    }
 
-        document.getElementById('cpf').addEventListener('input', function (e) {
-            let cpf = e.target.value.replace(/\D/g, ''); // Remove caracteres não numéricos
-            cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-            cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-            cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-            e.target.value = cpf;
-        });
+    function validarCPF(cpf) { // Remove qualquer caractere que não seja número do CPF.
+    cpf = cpf.replace(/[^\d]+/g, '');// Verifica se o CPF possui 11 dígitos e não é uma sequência de dígitos iguais (como '11111111111').
+    if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+    let soma = 0;
+    let resto;
+    // Calcula o primeiro dígito verificador.
+    for (let i = 1; i <= 9; i++) {
+        soma += parseInt(cpf.substring(i - 1, i)) * (11 - i);
+    }
+    resto = (soma * 10) % 11;
+    if (resto === 10 || resto === 11) resto = 0;// Caso o resto seja 10 ou 11, define o valor como 0.
+    if (resto !== parseInt(cpf.substring(9, 10))) return false;// Verifica se o primeiro dígito verificador calculado é diferente do dígito inserido no CPF.
+    soma = 0;
+    // Calcula o segundo dígito verificador.
+    for (let i = 1; i <= 10; i++) {
+        soma += parseInt(cpf.substring(i - 1, i)) * (12 - i);
+    }
+    resto = (soma * 10) % 11;
+    // Caso o resto seja 10 ou 11, define o valor como 0.
+    if (resto === 10 || resto === 11) resto = 0;
+    // Verifica se o segundo dígito verificador calculado é diferente do dígito inserido no CPF.
+    if (resto !== parseInt(cpf.substring(10, 11))) return false;
+    // Retorna verdadeiro se o CPF for válido.
+    return true;
+    }
+
+    function validarFormulario() {
+    // Obtém os valores dos campos de senha, confirmação de senha e CPF.
+    const senha = document.getElementById('senha').value;
+    const confirmacaoSenha = document.getElementById('confirmacaoSenha').value;
+    const cpf = document.getElementById('cpf').value;
+    // Seleciona o elemento onde a mensagem de erro será exibida.
+    const mensagemErro = document.getElementById('mensagemErro');
+    // Verifica se a senha e a confirmação de senha coincidem.
+    if (senha !== confirmacaoSenha) {
+        // Exibe uma mensagem de erro caso as senhas não coincidam.
+        mensagemErro.textContent = 'As senhas não coincidem.';
+        return false;
+    }
+    // Chama a função validarCPF para verificar se o CPF é válido.
+    if (!validarCPF(cpf)) {
+        // Exibe uma mensagem de erro caso o CPF seja inválido.
+        mensagemErro.textContent = 'CPF inválido.';
+        return false;
+    }
+    // Limpa qualquer mensagem de erro, pois o formulário passou nas validações.
+    mensagemErro.textContent = '';
+    return true;
+    }
+
+    document.getElementById('cpf').addEventListener('input', function (e) {
+    // Remove caracteres que não sejam números do valor inserido no campo CPF.
+    let cpf = e.target.value.replace(/\D/g, '');
+
+    // Aplica a máscara de CPF (XXX.XXX.XXX-XX) ao valor digitado.
+    cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+    cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+    cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+
+    // Atualiza o campo CPF com o valor formatado.
+    e.target.value = cpf;
+    });
     </script>
 </body>
 </html>
