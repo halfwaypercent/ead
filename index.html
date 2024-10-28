@@ -73,8 +73,9 @@
     <div class="container">
       
         <form id="cadastroForm" onsubmit="return validarFormulario()">
-            <label for="nome">Nome Completo</label>
-            <input type="text" id="nome" name="nome" required>
+     <label for="nome">Nome Completo</label>
+    <input type="text" id="nome"  name="nome"     min="3"  title="Nome Completo. Exemplo: Patrick Gomes" placeholder="Ex: Patrick Gomes"  pattern="([A-ZÀ-Ú]{1})([a-zà-ú]{2,})(([\s]{1}[A-ZÀ-Ú]{1})([a-zà-ú]{1,}))+"   />
+                                                                                                                                                                                
 
             <label for="dataNascimento">Data de Nascimento</label>
             <input type="date" id="dataNascimento" name="dataNascimento" required onchange="calcularIdade()">
