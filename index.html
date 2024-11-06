@@ -11,6 +11,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Validação de Formulário</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.12/jquery.mask.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.12/jquery.mask.min.js"></script>
+    <script>
+      //mascara cpf
+      $(document).ready(function () {
+        $("#CPF").mask("999.999.999-99");
+        $("#celular").mask("(00) 00000-0000");
+        
+        $('#nome').on('input', function() {
+                var value = $(this).val();/*guarda oque foi digitado*/
+                if (value) {
+                    $(this).val(value.charAt(0).toUpperCase() + value.slice(1).toLowerCase());
+                }
+            });
+      });
+
+      /*charAt é um método de strings que recebe um indice(valor) e pega a letra na posição correspondente */
+       /*slice é um método de strings que recebe um indice(valor) e pega corta a string em partes a partir do indice dado */
+    </script>
+     
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -81,7 +103,7 @@
       
         <form id="cadastroForm" onsubmit="return validarFormulario()">
      <label for="nome">Nome Completo</label>
-    <input type="text" id="nome"  name="nome"     min="3"  title="Nome Completo. Exemplo: Patrick Gomes" placeholder="Ex: Patrick Gomes"  pattern="([A-ZÀ-Ú]{1})([a-zà-ú]{2,})(([\s]{1}[A-ZÀ-Ú]{1})([a-zà-ú]{1,}))+"   />
+    <input type="text" id="nome"  name="nome" min="3"  title="Nome Completo Exemplo: Patrick gomes" placeholder="Ex: Patrick gomes"  pattern="([A-ZÀ-Ú]{1})([a-zà-ú]{2,})(([\s]{1}[A-ZÀ-Ú]{1})([a-zà-ú]{1,}))+"  />
                                                                                                                                                                                 
 
             <label for="dataNascimento">Data de Nascimento</label>
@@ -93,6 +115,9 @@
             <label for="cpf">CPF</label>
             <input type="text" id="cpf" name="cpf" required maxlength="14" placeholder="000.000.000-00">
 
+            <label for="celular">Celular</label>
+            <input type="tel" id="celular" name="celular" placeholder="Ex: DDD 986328551" required/>
+        
             <label for="usuario">Usuário</label>
             <input type="text" id="usuario" name="usuario" required>
 
