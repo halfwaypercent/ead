@@ -1,7 +1,6 @@
 <!--Carlos Henrique Cintra Alves     n°04 
     Enzo Ribeiro Gil                 n°07
     Julia Gabrielle Silva da Costa   n°16
-    Maria Eduarda Tanoue Barrionuevo n°21
     Otávio da Silva Sousa Filho      n°24
     Vanessa Ferreira dos Santos      n°28-->
 
@@ -103,7 +102,7 @@
       
         <form id="cadastroForm" onsubmit="return validarFormulario()">
      <label for="nome">Nome Completo</label>
-    <input type="text" id="nome"  name="nome" min="3"  title="Nome Completo Exemplo: Patrick gomes" placeholder="Ex: Patrick gomes"  pattern="([A-ZÀ-Ú]{1})([a-zà-ú]{2,})(([\s]{1}[A-ZÀ-Ú]{1})([a-zà-ú]{1,}))+"  />
+    <input type="text" id="nome"  name="nome" min="3" />
                                                                                                                                                                                 
 
             <label for="dataNascimento">Data de Nascimento</label>
@@ -216,13 +215,6 @@
     // Remove caracteres que não sejam números do valor inserido no campo CPF.
     let cpf = e.target.value.replace(/\D/g, '');
 
-    // Aplica a máscara de CPF (XXX.XXX.XXX-XX) ao valor digitado.
-    cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-    cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-    cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-
-    // Atualiza o campo CPF com o valor formatado.
-    e.target.value = cpf;
     });
     </script>
 </body>
